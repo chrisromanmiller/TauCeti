@@ -6,7 +6,6 @@ Authors: The Tau Ceti contributors
 module
 
 public import Mathlib.CategoryTheory.Action.Basic
-public import Mathlib.CategoryTheory.EssentiallySmall
 
 /-!
 # Actions on an essentially small category are essentially small

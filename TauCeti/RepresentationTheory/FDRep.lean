@@ -29,11 +29,12 @@ representation only when its carrier already lies there. A module-finite carrier
 neither the dimension nor the character. Only the character transfer needs `k` to be a field, `k`
 being a commutative ring throughout otherwise.
 
-Finally it records the two structural properties of the character that Mathlib's
+Finally it records the structural properties of the character that Mathlib's
 `RepresentationTheory/Character.lean` leaves out beside `FDRep.char_iso` and `FDRep.char_tensor`:
-the character is **additive on biproducts**, and the character of the **tensor unit** is the
-constant function `1`. Those are what is still missing before the character can be read as a ring
-homomorphism out of the representation ring, `TauCeti.repRingCharacter`.
+the character is **additive on biproducts** and vanishes on the **zero** representation, and the
+character of the **tensor unit** is the constant function `1`. Those are what is still missing
+before the character can be read as a ring homomorphism out of the representation ring,
+`TauCeti.repRingCharacter`.
 
 ## Main definitions
 
@@ -50,7 +51,8 @@ homomorphism out of the representation ring, `TauCeti.repRingCharacter`.
 * `FDRep.of_ρ_eq_self`: rebundling the representation carried by an object returns that object.
 * `FDRep.ofShrinkEquiv`: `FDRep.ofShrink ρ` carries a representation equivalent to `ρ`, whence
   `FDRep.finrank_ofShrink` and `FDRep.character_ofShrink`.
-* `FDRep.char_biprod`: the character is additive on biproducts.
+* `FDRep.char_biprod`: the character is additive on biproducts, with `FDRep.char_zero` the
+  character of the zero representation.
 * `FDRep.char_tensorUnit`: the character of the tensor unit is the constant function `1`.
 -/
 
@@ -157,7 +159,7 @@ end ShrinkCharacter
 
 section Biproduct
 
-open CategoryTheory Limits
+open CategoryTheory Limits ZeroObject
 
 variable {k : Type u} {G : Type v} [Field k] [Monoid G]
 
@@ -208,6 +210,23 @@ theorem char_biprod (X Y : FDRep k G) : (X ⊞ Y).character = X.character + Y.ch
   rw [FDRep.character, hsplit, map_add,
     trace_comp_of_retraction biprod.inl biprod.fst biprod.inl_fst,
     trace_comp_of_retraction biprod.inr biprod.snd biprod.inr_snd, Pi.add_apply]
+
+/-- **The character of the zero representation is the zero function**, the additive-identity
+companion of `FDRep.char_biprod`.
+
+It is that lemma at `X = Y = 0`: a biproduct of zero objects is again a zero object
+(`CategoryTheory.Limits.biprod_isZero_iff`), so `FDRep.char_iso` turns additivity into
+`χ = χ + χ`. -/
+@[simp]
+theorem char_zero : (0 : FDRep k G).character = 0 := by
+  have h := char_biprod (0 : FDRep k G) 0
+  have hz : ((0 : FDRep k G) ⊞ 0) ≅ 0 :=
+    ((biprod_isZero_iff (0 : FDRep k G) 0).2 ⟨isZero_zero _, isZero_zero _⟩).isoZero
+  rw [char_iso hz] at h
+  have h2 : (0 : FDRep k G).character + 0
+      = (0 : FDRep k G).character + (0 : FDRep k G).character := by
+    rw [add_zero]; exact h
+  exact (add_left_cancel h2).symm
 
 end Biproduct
 
