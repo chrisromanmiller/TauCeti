@@ -22,7 +22,7 @@ complexes and sends a presentation `A ⟶ B ⟶ X ⟶ 0` of `X` by objects of `P
 
 ## Main declarations
 
-* `CategoryTheory.ObjectProperty.bijective_restrictedPreadditiveYoneda_map`: the functor
+* `CategoryTheory.ObjectProperty.restrictedPreadditiveYoneda_map_bijective`: the functor
   `X ↦ (-, X)|_P` is fully faithful on morphisms out of a `P`-presented object.
 * `CategoryTheory.ObjectProperty.exact_map_restrictedPreadditiveYoneda`: restriction to projective
   objects preserves exactness of short complexes.
@@ -47,7 +47,7 @@ variable [Preadditive C]
 /-- The functor `X ↦ (-, X)|_P` is fully faithful on morphisms out of a `P`-presented object: a
 natural transformation `θ : (-, X)|_P ⟶ (-, Y)|_P` is `(-, g)` for the unique `g : X ⟶ Y` extending
 `θ π : B ⟶ Y` along the epimorphism `π : B ⟶ X`, where `B` is an object of `P`. -/
-theorem bijective_restrictedPreadditiveYoneda_map (hP : P ≤ isProjective C) {X : C}
+theorem restrictedPreadditiveYoneda_map_bijective (hP : P ≤ isProjective C) {X : C}
     (hX : P.presented X) (Y : C) :
     Function.Bijective (P.restrictedPreadditiveYoneda.map : (X ⟶ Y) → _) := by
   obtain ⟨f, c, hc, hA, hB⟩ := hX

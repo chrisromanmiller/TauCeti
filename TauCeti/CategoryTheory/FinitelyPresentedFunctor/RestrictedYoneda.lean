@@ -108,14 +108,14 @@ theorem restrictedPreadditiveYonedaToMod_map_hom (hP : P ≤ isProjective C) {Q 
 instance (hP : P ≤ isProjective C) {Q : ObjectProperty C} (hQ : Q ≤ P.presented) :
     (P.restrictedPreadditiveYonedaToMod hP hQ).Faithful where
   map_injective {X Y f g} h := by
-    refine ObjectProperty.hom_ext _ ((bijective_restrictedPreadditiveYoneda_map hP
+    refine ObjectProperty.hom_ext _ ((restrictedPreadditiveYoneda_map_bijective hP
       (hQ _ X.property) Y.obj).1 ?_)
     simpa using congr($(h).hom)
 
 instance (hP : P ≤ isProjective C) {Q : ObjectProperty C} (hQ : Q ≤ P.presented) :
     (P.restrictedPreadditiveYonedaToMod hP hQ).Full where
   map_surjective {X Y} θ := by
-    obtain ⟨g, hg⟩ := (bijective_restrictedPreadditiveYoneda_map hP
+    obtain ⟨g, hg⟩ := (restrictedPreadditiveYoneda_map_bijective hP
       (hQ _ X.property) Y.obj).2 θ.hom
     exact ⟨Q.homMk g, ObjectProperty.hom_ext _ (by simpa using hg)⟩
 
